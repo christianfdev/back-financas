@@ -13,10 +13,7 @@ conn();
 
 app.use('/api', routes);
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
 
 app.listen(port, () => {
-    console.log(`Example app listening on ${port}`)
+    console.log(`API Gerenciador Finanças rodando na porta ${port}`)
 })
