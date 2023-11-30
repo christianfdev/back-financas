@@ -5,6 +5,9 @@ const port = 3000;
 const conn = require('./db/conn');
 const routes = require('./routes/router');
 
+
+console.log()
+
 app.use(cors());
 
 app.use(express.json());
