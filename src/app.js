@@ -6,17 +6,23 @@ const conn = require('./db/conn');
 const routes = require('./routes/router');
 
 
-console.log()
-
 app.use(cors());
 
 app.use(express.json());
 
-conn();
-
 app.use('/api', routes);
 
 
-app.listen(port, () => {
-    console.log(`API Gerenciador Finanças rodando na porta ${port}`)
-})
+try {
+    conn();
+    app.listen(port, () => {
+        console.log(`API Gerenciador Finanças rodando na porta ${port}`)
+    })
+} catch (error) {
+    console.log(error)
+}
+
+
+
+
+

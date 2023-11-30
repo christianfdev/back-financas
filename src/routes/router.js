@@ -9,4 +9,8 @@ const profilesRouter = require('./profiles');
 
 router.use('/', profilesRouter);
 
+const authRouter = require('./auth');
+
+router.use('/', authRouter);
+
 module.exports = router;

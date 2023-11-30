@@ -2,18 +2,20 @@ const router = require('express').Router();
 
 const profileController = require('../controllers/profileController');
 
+
+const userAuth = require("../middlewares/userAuth");
+
 router
     .route('/profiles')
     .post((req, res) => profileController.create(req, res));
 
-
 router
     .route('/profiles')
-    .get((req, res) => profileController.getAll(req, res));
+    .get(userAuth, (req, res) => profileController.getAll(req, res));
 
 router
     .route('/profiles/:id')
-    .get((req, res) => profileController.get(req, res));
+    .get(userAuth, (req, res) => profileController.get(req, res));
 
 router
     .route('/profiles/:id')
