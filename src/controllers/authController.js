@@ -36,8 +36,6 @@ const authController = {
         try {
             const secret = process.env.SECRET;
 
-            console.log(secret)
-
             const token = jwt.sign(
                 {
                   id: profile._id,
@@ -45,7 +43,6 @@ const authController = {
                 secret
             );
 
-           
             res.status(200).json({msg: "Autenticação realizada com sucesso!", token})
 
         } catch (error) {

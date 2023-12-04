@@ -76,6 +76,7 @@ const profileController = {
             const id = req.params.id;
 
             const profile = await Profile.findById(id);
+            console.log(profile);
 
             if (!profile) {
                 res.status(404).json({ msg: 'Perfil não encontrado' });
@@ -112,11 +113,27 @@ const profileController = {
 
             //Mantendo atualmente o retorno das informações 
             //Apenas para questões de teste
-            res.json(200).json({ profile, msg: 'Perfil atualizado com sucesso.' })
+            res.status(200).json({ profile, msg: 'Perfil atualizado com sucesso.' })
         } catch (error) {
             console.log(`Erro: ${error}`);
         }
-    }
+    },
+    me: async (req, res) => {
+        try {
+            const id = req.params.id;
+
+            const profile = await Profile.findById(id, "-password");
+
+            if (!profile) {
+                res.status(404).json({ msg: 'Perfil não encontrado' });
+                return
+            }
+
+            res.json(profile);
+        } catch (error) {
+            console.log(`Erro: ${error}`);
+        }
+}
 }
 
 module.exports = profileController;

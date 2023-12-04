@@ -9,6 +9,7 @@ const registerController = {
                 category: req.body.category,
                 value: req.body.value,
                 date: req.body.date,
+                userId: req.body.userId
             }
 
             const response = await Register.create(register);
@@ -20,7 +21,9 @@ const registerController = {
     },
     getAll: async (req, res) => {
         try {
-            const registers = await Register.find();
+            const userId = req.params.userId;
+
+            const registers = await Register.find({ userId });
 
             res.json(registers);
         } catch (error) {
@@ -33,7 +36,7 @@ const registerController = {
             const id = req.params.id;
 
             //Agora posso continuar meu get específico
-            const register = await Register.findById(id);
+            const register = await Register.find;
 
             //Validação caso não encontre registro
             if (!register) {
@@ -82,6 +85,7 @@ const registerController = {
             category: req.body.category,
             value: req.body.value,
             date: req.body.date,
+            userId: req.body.userId
         }
 
         const updatedRegister = await Register.findByIdAndUpdate(id, register);
