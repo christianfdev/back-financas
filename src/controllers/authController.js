@@ -45,7 +45,7 @@ const authController = {
                 secret
             );
 
-            console.log("chegou dnv")
+           
             res.status(200).json({msg: "Autenticação realizada com sucesso!", token})
 
         } catch (error) {
