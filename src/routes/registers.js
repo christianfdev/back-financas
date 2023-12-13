@@ -7,12 +7,16 @@ router
     .post((req, res) => registerController.create(req,res));
 
 router
-    .route('/registers')
+    .route('/registers/all/:userId')
     .get((req, res) => registerController.getAll(req, res));
 
 router
     .route('/registers/:id')
     .get((req, res) => registerController.get(req, res));
+
+router
+    .route('/registers/balance/:userId')
+    .get((req, res) => registerController.balance(req, res));
 
 router
     .route('/registers/:id')

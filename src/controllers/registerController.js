@@ -1,5 +1,8 @@
 const { Register } = require('../models/Register');
 
+
+
+
 const registerController = {
     create: async (req, res) => {
         try {
@@ -36,7 +39,7 @@ const registerController = {
             const id = req.params.id;
 
             //Agora posso continuar meu get específico
-            const register = await Register.find;
+            const register = await Register.findById(id);
 
             //Validação caso não encontre registro
             if (!register) {
@@ -46,6 +49,53 @@ const registerController = {
 
             res.json(register);
 
+        } catch (error) {
+            console.log(`Erro: ${error}`);
+        }
+    },
+    balance: async(req, res) => {
+        try {
+
+            const categories = ['contas', 'lazer', 'escola', 'aluguel', 'compras', 'salario', 'lucro'];
+
+            const userId = req.params.userId;
+
+            const data = await Register.find({ userId });
+
+            let totalDebts = 0;
+            let totalEntries = 0;
+
+            for(value of data){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                value.type.includes("gasto") 
+                    ? totalDebts += value.value 
+                    : totalEntries += value.value;
+            }
+
+            let balance = totalEntries - totalDebts;
+
+            let registers = [];
+
+            for(value of data){
+                for(category of categories){
+                    if(value.category.includes(category) && !registers.some((e) => e.category.includes(category))){
+
+                        let filterData = data.filter((e) => e.category.includes(category));
+                        let total = 0;
+                        for(i of filterData){
+                            total += i.value;
+                        }
+
+                        registers.push({type: filterData[0].type, category: filterData[0].category, value: total});
+                    }else{
+                        continue;
+                    }
+                }
+
+            }
+
+            console.log(registers);
+            
+            res.json({registers, totalDebts, totalEntries, balance});
         } catch (error) {
             console.log(`Erro: ${error}`);
         }
