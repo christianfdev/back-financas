@@ -1,7 +1,5 @@
 const router = require('express').Router();
-
 const profileController = require('../controllers/profileController');
-
 const userAuth = require("../middlewares/userAuth");
 
 router.route('/profiles').post((req, res) => profileController.create(req, res));

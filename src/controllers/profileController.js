@@ -1,7 +1,5 @@
 const Profile = require('../models/Profile');
-
 const bcrypt = require("bcrypt");
-
 
 const profileController = {
     create: async (req, res) => {

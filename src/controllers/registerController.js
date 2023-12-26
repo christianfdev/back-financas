@@ -1,8 +1,5 @@
 const { Register } = require('../models/Register');
 
-
-
-
 const registerController = {
     create: async (req, res) => {
         try {
@@ -52,6 +49,28 @@ const registerController = {
         } catch (error) {
             console.log(`Erro: ${error}`);
         }
+    },
+    getMonth: async(req, res) => {
+
+        try {
+            const userId = req.params.userId;
+
+            const registers = await Register.find({ userId });
+
+            let monthRegisters = [];
+
+            for(let i = 0; i < registers.length; i++){
+
+                if(new Date(registers[i].date).getMonth() == Number(req.params.month)) monthRegisters.push(registers[i])
+
+            }
+
+            res.json(monthRegisters);
+        
+        } catch (error) {
+            console.log(`Erro: ${error}`);
+        }
+
     },
     balance: async(req, res) => {
         try {

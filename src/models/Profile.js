@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-
 const { Schema } = mongoose;
-
 const { registerSchema } = require('./Register');
 
 const profileSchema = new Schema({

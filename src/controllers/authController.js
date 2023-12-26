@@ -3,8 +3,6 @@ const Profile = require("../models/Profile");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
-
 const authController = {
     login: async (req, res) => {
         const { username, password } = req.body;
