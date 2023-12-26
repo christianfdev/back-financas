@@ -1,5 +1,7 @@
 const { Register } = require('../models/Register');
 
+const categories = ['contas', 'lazer', 'escola', 'aluguel', 'compras', 'salario', 'lucro'];
+
 const registerController = {
     create: async (req, res) => {
         try {
@@ -59,9 +61,12 @@ const registerController = {
 
             let monthRegisters = [];
 
+            console.log(new Date(registers[0].date).getFullYear());
+
             for(let i = 0; i < registers.length; i++){
 
-                if(new Date(registers[i].date).getMonth() == Number(req.params.month)) monthRegisters.push(registers[i])
+                if(new Date(registers[i].date).getMonth() == Number(req.params.month) && new Date(registers[i].date).getFullYear() == new Date().getFullYear()) 
+                monthRegisters.push(registers[i])
 
             }
 
@@ -72,10 +77,8 @@ const registerController = {
         }
 
     },
-    balance: async(req, res) => {
+    allBalance: async(req, res) => {
         try {
-
-            const categories = ['contas', 'lazer', 'escola', 'aluguel', 'compras', 'salario', 'lucro'];
 
             const userId = req.params.userId;
 
@@ -115,6 +118,60 @@ const registerController = {
             console.log(registers);
             
             res.json({registers, totalDebts, totalEntries, balance});
+        } catch (error) {
+            console.log(`Erro: ${error}`);
+        }
+    },
+    monthBalance: async (req, res) => {
+        try {
+
+            const userId = req.params.userId;
+
+            const data = await Register.find({ userId });
+
+            let totalDebts = 0;
+            let totalEntries = 0;
+
+            let monthRegisters = [];
+
+            for(let i = 0; i < data.length; i++){
+
+                if(new Date(data[i].date).getMonth() == Number(req.params.month) && new Date(data[i].date).getFullYear() == new Date().getFullYear()) 
+                monthRegisters.push(data[i])
+
+            }
+
+            for(value of monthRegisters){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                value.type.includes("gasto") 
+                    ? totalDebts += value.value 
+                    : totalEntries += value.value;
+            }
+
+            let balance = totalEntries - totalDebts;
+
+            let registers = [];
+
+            for(value of monthRegisters){
+                for(category of categories){
+                    if(value.category.includes(category) && !registers.some((e) => e.category.includes(category))){
+
+                        let filterData = monthRegisters.filter((e) => e.category.includes(category));
+                        let total = 0;
+                        for(i of filterData){
+                            total += i.value;
+                        }
+
+                        registers.push({type: filterData[0].type, category: filterData[0].category, value: total});
+                    }else{
+                        continue;
+                    }
+                }
+
+            }
+
+            console.log(registers);
+            
+            res.json({registers, totalDebts, totalEntries, balance, month: req.params.month});
         } catch (error) {
             console.log(`Erro: ${error}`);
         }

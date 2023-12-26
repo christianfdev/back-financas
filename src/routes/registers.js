@@ -7,7 +7,9 @@ router.route('/registers/all/:userId').get((req, res) => registerController.getA
 
 router.route('/registers/:id').get((req, res) => registerController.get(req, res));
 
-router.route('/registers/balance/:userId').get((req, res) => registerController.balance(req, res));
+router.route('/registers/balance/:userId').get((req, res) => registerController.allBalance(req, res));
+
+router.route('/registers/balance/:userId/:month').get((req, res) => registerController.monthBalance(req, res));
 
 router.route('/registers/all/:userId/:month').get((req, res) => registerController.getMonth(req, res));
 
