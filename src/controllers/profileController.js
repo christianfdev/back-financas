@@ -14,11 +14,11 @@ const profileController = {
                 return res.status(422).json({ msg: "Por favor, utilize outro username" });
             }
 
-            //Create password
+            //Criando Password
             const salt = await bcrypt.genSalt(12);
             const passwordHash = await bcrypt.hash(password, salt);
 
-            //Create profile
+            //Criando Profile
             const profile = new Profile({
                 username,
                 password: passwordHash,
@@ -92,9 +92,7 @@ const profileController = {
         try {
             const id = req.params.id;
 
-            //Atualizando dessa forma enquanto não implemento
-            //A segurança do password do Perfil 
-            //E as telas no front relacionadas a alteração de senha
+            //Update dessa forma ainda enquanto não implemento as telas no front relacionadas a alteração de senha
             const profile = {
                 username: req.body.username,
                 password: req.body.password,
@@ -117,6 +115,8 @@ const profileController = {
         }
     },
     me: async (req, res) => {
+        // Implementação inicial, apenas para ter uma ideia de quando for começar a implementar a feature de Perfil
+
         try {
             const id = req.params.id;
 

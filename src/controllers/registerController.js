@@ -61,8 +61,6 @@ const registerController = {
 
             let monthRegisters = [];
 
-            console.log(new Date(registers[0].date).getFullYear());
-
             for(let i = 0; i < registers.length; i++){
 
                 if(new Date(registers[i].date).getMonth() == Number(req.params.month) && new Date(registers[i].date).getFullYear() == new Date().getFullYear()) 
@@ -170,6 +168,7 @@ const registerController = {
             }
 
             console.log(registers);
+            console.log(req.params.month)
             
             res.json({registers, totalDebts, totalEntries, balance, month: req.params.month});
         } catch (error) {
