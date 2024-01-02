@@ -52,7 +52,7 @@ const registerController = {
             console.log(`Erro: ${error}`);
         }
     },
-    getMonth: async(req, res) => {
+    getMonth: async (req, res) => {
 
         try {
             const userId = req.params.userId;
@@ -61,21 +61,21 @@ const registerController = {
 
             let monthRegisters = [];
 
-            for(let i = 0; i < registers.length; i++){
+            for (let i = 0; i < registers.length; i++) {
 
-                if(new Date(registers[i].date).getMonth() == Number(req.params.month) && new Date(registers[i].date).getFullYear() == new Date().getFullYear()) 
-                monthRegisters.push(registers[i])
+                if (new Date(registers[i].date).getMonth() == Number(req.params.month) && new Date(registers[i].date).getFullYear() == new Date().getFullYear())
+                    monthRegisters.push(registers[i])
 
             }
 
             res.json(monthRegisters);
-        
+
         } catch (error) {
             console.log(`Erro: ${error}`);
         }
 
     },
-    allBalance: async(req, res) => {
+    allBalance: async (req, res) => {
         try {
 
             const userId = req.params.userId;
@@ -85,9 +85,9 @@ const registerController = {
             let totalDebts = 0;
             let totalEntries = 0;
 
-            for(value of data){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-                value.type.includes("gasto") 
-                    ? totalDebts += value.value 
+            for (value of data) {
+                value.type.includes("gasto")
+                    ? totalDebts += value.value
                     : totalEntries += value.value;
             }
 
@@ -95,18 +95,18 @@ const registerController = {
 
             let registers = [];
 
-            for(value of data){
-                for(category of categories){
-                    if(value.category.includes(category) && !registers.some((e) => e.category.includes(category))){
+            for (value of data) {
+                for (category of categories) {
+                    if (value.category.includes(category) && !registers.some((e) => e.category.includes(category))) {
 
                         let filterData = data.filter((e) => e.category.includes(category));
                         let total = 0;
-                        for(i of filterData){
+                        for (i of filterData) {
                             total += i.value;
                         }
 
-                        registers.push({type: filterData[0].type, category: filterData[0].category, value: total});
-                    }else{
+                        registers.push({ type: filterData[0].type, category: filterData[0].category, value: total });
+                    } else {
                         continue;
                     }
                 }
@@ -114,8 +114,8 @@ const registerController = {
             }
 
             console.log(registers);
-            
-            res.json({registers, totalDebts, totalEntries, balance});
+
+            res.json({ registers, totalDebts, totalEntries, balance });
         } catch (error) {
             console.log(`Erro: ${error}`);
         }
@@ -132,16 +132,19 @@ const registerController = {
 
             let monthRegisters = [];
 
-            for(let i = 0; i < data.length; i++){
+            console.log(new Date(req.params.date).getUTCMonth())
 
-                if(new Date(data[i].date).getMonth() == Number(req.params.month) && new Date(data[i].date).getFullYear() == new Date().getFullYear()) 
-                monthRegisters.push(data[i])
+            for (let i = 0; i < data.length; i++) {
+
+                if (new Date(data[i].date).getMonth() == Number(new Date(req.params.date).getUTCMonth()) && new Date(data[i].date).getFullYear() == new Date(req.params.date).getUTCFullYear()) {
+                    monthRegisters.push(data[i])
+                }
 
             }
 
-            for(value of monthRegisters){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-                value.type.includes("gasto") 
-                    ? totalDebts += value.value 
+            for (value of monthRegisters) {
+                value.type.includes("gasto")
+                    ? totalDebts += value.value
                     : totalEntries += value.value;
             }
 
@@ -149,18 +152,18 @@ const registerController = {
 
             let registers = [];
 
-            for(value of monthRegisters){
-                for(category of categories){
-                    if(value.category.includes(category) && !registers.some((e) => e.category.includes(category))){
+            for (value of monthRegisters) {
+                for (category of categories) {
+                    if (value.category.includes(category) && !registers.some((e) => e.category.includes(category))) {
 
                         let filterData = monthRegisters.filter((e) => e.category.includes(category));
                         let total = 0;
-                        for(i of filterData){
+                        for (i of filterData) {
                             total += i.value;
                         }
 
-                        registers.push({type: filterData[0].type, category: filterData[0].category, value: total});
-                    }else{
+                        registers.push({ type: filterData[0].type, category: filterData[0].category, value: total });
+                    } else {
                         continue;
                     }
                 }
@@ -169,8 +172,8 @@ const registerController = {
 
             console.log(registers);
             console.log(req.params.month)
-            
-            res.json({registers, totalDebts, totalEntries, balance, month: req.params.month});
+
+            res.json({ registers, totalDebts, totalEntries, balance, month: new Date(req.params.date).getUTCMonth()});
         } catch (error) {
             console.log(`Erro: ${error}`);
         }
@@ -215,11 +218,11 @@ const registerController = {
 
         const updatedRegister = await Register.findByIdAndUpdate(id, register);
 
-        if(!updatedRegister){
-            res.status(404).json({msg: 'Registro não encontrado.'});
+        if (!updatedRegister) {
+            res.status(404).json({ msg: 'Registro não encontrado.' });
         }
 
-        res.status(200).json({updatedRegister, msg: 'Registro atualizado com sucesso.'});
+        res.status(200).json({ updatedRegister, msg: 'Registro atualizado com sucesso.' });
     }
 };
 
