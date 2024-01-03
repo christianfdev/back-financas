@@ -63,8 +63,9 @@ const registerController = {
 
             for (let i = 0; i < registers.length; i++) {
 
-                if (new Date(registers[i].date).getMonth() == Number(req.params.month) && new Date(registers[i].date).getFullYear() == new Date().getFullYear())
+                if (new Date(registers[i].date).getMonth() == Number(new Date(req.params.date).getUTCMonth()) && new Date(registers[i].date).getFullYear() == new Date(req.params.date).getUTCFullYear()) {
                     monthRegisters.push(registers[i])
+                }
 
             }
 
