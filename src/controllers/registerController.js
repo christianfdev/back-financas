@@ -123,17 +123,13 @@ const registerController = {
     },
     monthBalance: async (req, res) => {
         try {
-
             const userId = req.params.userId;
 
             const data = await Register.find({ userId });
 
             let totalDebts = 0;
             let totalEntries = 0;
-
             let monthRegisters = [];
-
-            console.log(new Date(req.params.date).getUTCMonth())
 
             for (let i = 0; i < data.length; i++) {
 
@@ -171,8 +167,6 @@ const registerController = {
 
             }
 
-            console.log(registers);
-            console.log(req.params.month)
 
             res.json({ registers, totalDebts, totalEntries, balance, month: new Date(req.params.date).getUTCMonth()});
         } catch (error) {
